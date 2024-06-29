@@ -8,9 +8,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "surface_saver"
 version = "2022.3.6.2"
-description = " Help to box up the stuff that's cluttering horizontal surfaces "
+description = "Help to box up the stuff that's cluttering horizontal surfaces "
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
+dependencies = ["gather", "jsonschema"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
