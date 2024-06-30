@@ -13,7 +13,7 @@ class InvalidFileError(Exception):
 def _validate_json_file(file_path, schema):
     try:
         contents = file_path.read_text()
-        data = json.loads(json_file)
+        data = json.loads(contents)
         validate(instance=data, schema=schema)
     except (IOError, json.JSONDecodeError, ValidationError) as exc:
         raise InvalidFileError(exc, file_path)
@@ -30,7 +30,8 @@ def validate_all_json_files(root_json):
         if not directory.exists():
             continue
         for child in directory.glob("*.json"):
+            print("Checking", child)
             try:
-                _validate_json_file(file_path, schema)
+                _validate_json_file(child, schema)
             except InvalidFileError as exc:
-                print(f"Invalid file: {exc}")
+                yield child, exc
