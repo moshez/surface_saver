@@ -2,26 +2,35 @@ import json
 import os
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+import importlib.resources
+import pathlib
+
+import surface_saver
 
 class InvalidFileError(Exception):
     pass
 
-def validate_json_file(file_path, schema):
-        try:
-            contents = file_path.read_text()
-            data = json.load(json_file)
-            validate(instance=data, schema=schema)
-        except (IOError, json.JSONDecodeError, ValidationError) as exc:
-            raise InvalidFileError(exc, file_path)
+def _validate_json_file(file_path, schema):
+    try:
+        contents = file_path.read_text()
+        data = json.loads(json_file)
+        validate(instance=data, schema=schema)
+    except (IOError, json.JSONDecodeError, ValidationError) as exc:
+        raise InvalidFileError(exc, file_path)
 
-def validate_all_json_files(root_json, schema_path):
-    items = json.load(root_json.read_text())
-    schema = json.load(schema_path.read_text())
+_SCHEMA_PATH = importlib.resources.files(surface_saver) / "box-contents-schema.json"
+
+def validate_all_json_files(root_json):
+    items = json.loads(root_json.read_text())
+    schema = json.loads(_SCHEMA_PATH.read_text())
+    parent = root_json.parent
     for an_item in items:
         name = an_item["name"].replace(" ", "-").lower()
-        directory = pathlib.Path(name)
+        directory = parent / name
+        if not directory.exists():
+            continue
         for child in directory.glob("*.json"):
             try:
-                validate_json_file(file_path, schema)
+                _validate_json_file(file_path, schema)
             except InvalidFileError as exc:
                 print(f"Invalid file: {exc}")
