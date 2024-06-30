@@ -2,8 +2,15 @@ import unittest
 import json
 import tempfile
 from pathlib import Path
-from hamcrest import assert_that, empty, has_length, instance_of, contains_exactly, has_item, anything
+from hamcrest import (
+    assert_that,
+    empty,
+    has_length,
+    instance_of,
+    has_item,
+)
 from surface_saver.validator import validate_all_json_files, InvalidFileError
+
 
 class TestSurfaceSaverValidator(unittest.TestCase):
     def setUp(self):
@@ -15,31 +22,36 @@ class TestSurfaceSaverValidator(unittest.TestCase):
 
     def test_valid_files(self):
         root_json = self.root_dir / "root.json"
-        root_json.write_text(json.dumps([
-            {"name": "Box One"},
-            {"name": "Box Two"}
-        ]))
+        root_json.write_text(json.dumps([{"name": "Box One"}, {"name": "Box Two"}]))
 
         box_one = self.root_dir / "box-one"
         box_one.mkdir()
-        (box_one / "2023-06-30.json").write_text(json.dumps([
-            {
-                "name": "Item 1",
-                "categories": ["Category A"],
-                "description": "Description 1",
-                "notes": "Note 1"
-            }
-        ]))
+        (box_one / "2023-06-30.json").write_text(
+            json.dumps(
+                [
+                    {
+                        "name": "Item 1",
+                        "categories": ["Category A"],
+                        "description": "Description 1",
+                        "notes": "Note 1",
+                    }
+                ]
+            )
+        )
 
         box_two = self.root_dir / "box-two"
         box_two.mkdir()
-        (box_two / "2023-07-01.json").write_text(json.dumps([
-            {
-                "name": "Item 2",
-                "categories": ["Category B", "Category C"],
-                "description": "Description 2"
-            }
-        ]))
+        (box_two / "2023-07-01.json").write_text(
+            json.dumps(
+                [
+                    {
+                        "name": "Item 2",
+                        "categories": ["Category B", "Category C"],
+                        "description": "Description 2",
+                    }
+                ]
+            )
+        )
 
         results = list(validate_all_json_files(root_json))
         assert_that(results, empty())
@@ -65,12 +77,9 @@ class TestSurfaceSaverValidator(unittest.TestCase):
         box_one = self.root_dir / "box-one"
         box_one.mkdir()
         missing_field_file = box_one / "missing_description.json"
-        missing_field_file.write_text(json.dumps([
-            {
-                "name": "Item 1",
-                "categories": ["Category A"]
-            }
-        ]))
+        missing_field_file.write_text(
+            json.dumps([{"name": "Item 1", "categories": ["Category A"]}])
+        )
 
         results = list(validate_all_json_files(root_json))
         assert_that(results, has_length(1))
@@ -84,13 +93,17 @@ class TestSurfaceSaverValidator(unittest.TestCase):
         box_one = self.root_dir / "box-one"
         box_one.mkdir()
         invalid_type_file = box_one / "invalid_type.json"
-        invalid_type_file.write_text(json.dumps([
-            {
-                "name": "Item 1",
-                "categories": "Not an array",
-                "description": "Description 1"
-            }
-        ]))
+        invalid_type_file.write_text(
+            json.dumps(
+                [
+                    {
+                        "name": "Item 1",
+                        "categories": "Not an array",
+                        "description": "Description 1",
+                    }
+                ]
+            )
+        )
 
         results = list(validate_all_json_files(root_json))
         assert_that(results, has_length(1))
@@ -126,7 +139,9 @@ class TestSurfaceSaverValidator(unittest.TestCase):
         box_two = self.root_dir / "box-two"
         box_two.mkdir()
         invalid_file2 = box_two / "invalid2.json"
-        invalid_file2.write_text(json.dumps([{"name": "Item 1"}]))  # Missing required 'description'
+        invalid_file2.write_text(
+            json.dumps([{"name": "Item 1"}])
+        )  # Missing required 'description'
 
         results = sorted(validate_all_json_files(root_json))
         assert_that(results, has_length(2))
