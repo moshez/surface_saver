@@ -51,3 +51,6 @@ is_main_match = ".*/trunk$"
 
 [project.entry-points.gather]
 placeholder = "surface_saver"
+
+[tool.setuptools.package-data]
+"surface_saver" = ["box-contents-schema.json"]
