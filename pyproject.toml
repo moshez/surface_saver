@@ -11,7 +11,7 @@ version = "2022.3.6.2"
 description = "Help to box up the stuff that's cluttering horizontal surfaces "
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
-dependencies = ["gather", "jsonschema"]
+dependencies = ["gather", "jsonschema", "commander_data"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
