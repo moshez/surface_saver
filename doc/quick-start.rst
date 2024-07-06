@@ -35,6 +35,7 @@ Surface Saver provides a command-line interface for validating your JSON files. 
        python -m surface_saver validate path/to/boxes.json
 
    This command will check all JSON files in the directories specified by ``boxes.json``.
+   The directories are assumed to be relative to the ``boxes.json`` file.
 
 Command-line Interface
 ----------------------
@@ -43,10 +44,10 @@ The ``validate`` command has the following syntax:
 
 .. code-block:: none
 
-    python -m surface_saver validate [-h] json_directory
+    python -m surface_saver validate [-h] json_file
 
 Arguments:
-    json_directory
+    json_file
         Path to the root JSON file that defines your box structure.
 
 Options:
@@ -56,7 +57,6 @@ Options:
 Output
 ------
 
-The validation process will print "Checking {file}" for each file it validates. 
 If any files are invalid, the output will include one line per invalid file with an explanation. 
 Each line will contain the file path and the specific problem encountered.
 
