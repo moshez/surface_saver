@@ -1,14 +1,11 @@
 import argparse
 import json
-import os
 import importlib.resources
 import pathlib
 from typing import Dict, List, Tuple, Generator, Any
 
 from gather.commands import add_argument
 from . import ENTRY_DATA
-from commander_data import COMMAND
-from commander_data.common import LOCAL_PYTHON as PYTHON
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
@@ -52,16 +49,18 @@ def validate_all_json_files(
     """
     Validate all JSON files in the directory structure defined by the root JSON file.
 
-    This function reads the root JSON file, which should contain a list of items with 'name' fields.
-    It then looks for directories named after these items (with spaces replaced by hyphens and lowercased)
+    This function reads the root JSON file,
+    which should contain a list of items with 'name' fields.
+    It then looks for directories named after these items
+    (with spaces replaced by hyphens and lowercased)
     and validates all JSON files within these directories against the schema.
 
     Args:
         root_json (pathlib.Path): The path to the root JSON file.
 
     Yields:
-        Tuple[pathlib.Path, InvalidFileError]: A tuple containing the path of an invalid JSON file
-        and the corresponding InvalidFileError exception.
+        Tuple[pathlib.Path, InvalidFileError]: A tuple containing the path of an
+        invalid JSON file and the corresponding InvalidFileError exception.
     """
     items: List[Dict[str, Any]] = json.loads(root_json.read_text())
     schema: Dict[str, Any] = json.loads(_SCHEMA_PATH.read_text())
