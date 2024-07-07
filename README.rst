@@ -1,6 +1,14 @@
 Surface Saver
 =============
 
+.. image:: https://readthedocs.org/projects/surface-saver/badge/?version=latest
+    :target: https://surface-saver.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://img.shields.io/pypi/v/surface_saver.svg
+    :target: https://pypi.org/project/surface_saver/
+    :alt: PyPI Version
+
 Surface Saver is a tool designed to help organize and validate your storage system. It provides a simple way to keep track of items in various storage boxes and ensures that your inventory data is correctly formatted.
 
 Installation
@@ -44,7 +52,7 @@ Features
 Documentation
 -------------
 
-For more detailed information and advanced usage, please refer to the full documentation in the ``docs`` directory.
+For more detailed information and advanced usage, please refer to the full documentation on `Read the Docs <https://surface-saver.readthedocs.io/>`_.
 
 Contributing
 ------------
@@ -54,4 +62,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 License
 -------
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the licence in
+``pyproject.toml``
+for details.
